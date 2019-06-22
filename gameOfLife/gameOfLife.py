@@ -33,7 +33,7 @@ def  printBoard(board):
 
     print(rowStr)
 
-def updateBoard(board)
+def updateBoard(board):
     # updateBoard will update every cell according to the 4 rules
     # parameter board is just a list of lists
     updatedBoard = copy.deepcopy(board)
