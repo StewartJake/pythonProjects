@@ -41,7 +41,70 @@ def updateBoard(board):
         for j in range(len(board[i])):
             neighborSum = 0
 
+def findNeighbors(board):
+    #board will be a list and this function will return a sum of neighbors
+    neighborBoard = copy.deepcopy(board)
+    for i in range(len(board)):
+        for j in range(len(board[i])):
+            neighborSum = 0
+            #concern is for hitting the left index
+            #right overflow has no effect in slices
+            if (i > 0) and (i < len(board) - 1):
+                #central cell
+                if (j > 0) and (j < len(board[i]) - 1):
+                    neighborSum += board[i-1][j-1:j+2].count(alive)
+                    neighborSum += board[i][j-1]
+                    neighborSum += board[i][j+1]
+                    neighborSum += board[i+1][j-1:j+2].count(alive)
+                #left-border cell
+                elif (j == 0):
+                    neighborSum += board[i-1][j:j+2].count(alive)
+                    neighborSum += board[i][j+1]
+                    neighborSum += board[i+1][j:j+2].count(alive)
+                #right-border cell
+                elif (j == len(board[i]) - 1):
+                    neighborSum += board[i-1][j-1:j+1].count(alive)
+                    neighborSum += board[i][j-1]
+                    neighborSum += board[i+1][j-1:j+1].count(alive)
+            elif (i == len(board) - 1):
+                #bottom-border
+                if (j > 0) and (j < len(board[i]) - 1) :
+                    neighborSum += board[i-1][j-1:j+2].count(alive)
+                    neighborSum += board[i][j-1]
+                    neighborSum += board[i][j+1]
+                #south-west cell
+                elif (j == 0):
+                    neighborSum += board[i-1][j:j+2].count(alive)
+                    neighborSum += board[i][j+1]
+                #south-east cell
+                elif (j == len(board[i]) - 1):
+                    neighborSum += board[i-1][j-1:j+1].count(alive)
+                    neighborSum += board[i][j-1]
+            elif (i == 0):
+                #top-border
+                if (j > 0) and (j < len(board[i]) - 1) :
+                    neighborSum += board[i+1][j-1:j+2].count(alive)
+                    neighborSum += board[i][j-1]
+                    neighborSum += board[i][j+1]
+                #north-west cell
+                elif (j == 0):
+                    neighborSum += board[i+1][j:j+2].count(alive)
+                    neighborSum += board[i][j+1]
+                #north-east cell
+                elif (j == len(board[i]) - 1):
+                    neighborSum += board[i+1][j-1:j+1].count(alive)
+                    neighborSum += board[i][j-1]
+            neighborBoard[i][j] = neighborSum
+    return neighborBoard
 
-printBoard(deadState)
 printBoard(randomState)
+# pretty print b/c hard to confirm in errorLog
+a = findNeighbors(randomState)
+rowStr = ""
+for i in range(len(a)):
+    for j in range(len(a[i])):
+        rowStr += str(a[i][j])
+    rowStr += "\n"
+
+print(rowStr)
 log.close()
