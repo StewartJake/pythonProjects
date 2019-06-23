@@ -11,6 +11,9 @@
 Just run and watch the beauty of life.
 
 To be added:
+
 -Save random starts so can recover enjoyable patterns
+
 -load in pattern to start with
+
 -user input for above functions
