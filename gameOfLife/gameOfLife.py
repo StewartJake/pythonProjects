@@ -12,9 +12,9 @@ height = 38
 width = 150
 # list  of lists with dim width x height
 deadState = [[DEAD]*width for _ in range(height)]
-
 # Randomize the boardState
 randomState = copy.deepcopy(deadState)
+
 
 for i in range(height):
     for j in range(width):
@@ -29,8 +29,8 @@ def  printBoard(board):
             else:
                 rowStr += " "
         rowStr += "\n"
-
     print(rowStr)
+
 
 def updateBoard(board):
     # UpdateBoard will update every cell according to the 4 rules
@@ -39,6 +39,7 @@ def updateBoard(board):
     for i in range(len(board)):
         for j in range(len(board[i])):
             neighborSum = 0
+
 
 def findNeighbors(board):
     # Board will be a list and this function will return a sum of neighbors
@@ -98,10 +99,10 @@ def findNeighbors(board):
             neighborBoard[i][j] = neighborSum
     return neighborBoard
 
+
 def updateBoard(board):
     nextBoard = copy.deepcopy(board)
     neighBoard = findNeighbors(board)
-    
     for i in range(len(board)):
         for j in range(len(board[i])):
             #over/under-population
@@ -113,6 +114,7 @@ def updateBoard(board):
             if (    board[i][j] == DEAD) and (neighBoard[i][j] == 3):
                     nextBoard[i][j] = ALIVE
     return nextBoard
+
 
 def loadBoard(key):
     # Take a key, as a string, to search the save file
@@ -128,6 +130,7 @@ def loadBoard(key):
             found = True
     return (found, eval(board[0]))
 
+
 # Attempts to end program if just stuck in same pattern
 # Sill needs work
 formerState = copy.deepcopy(deadState)
@@ -136,6 +139,7 @@ i = 0
 # Add some sanitation to this input
 initialState = randomState
 wantLoaded = input("Do you want to load a file?" + '\n' + "(Y/N):\n")
+
 if (wantLoaded.lower() == "y"):
     boardChoice = input("What is the save file:\n")
     gameStart = loadBoard(boardChoice)
