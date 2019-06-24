@@ -10,17 +10,17 @@ log = open("errorLog","w+")
 saveLog = open("saves","r")
 height = 38 
 width = 150
-# a tuple of tuples with dim width x height
+# list  of lists with dim width x height
 deadState = [[DEAD]*width for _ in range(height)]
 
-# randomize the boardState
+# Randomize the boardState
 randomState = copy.deepcopy(deadState)
 
 for i in range(height):
     for j in range(width):
         randomState[i][j] = random.randint(0,1)
 def  printBoard(board):
-    # print board state like a board
+    # Print board state like a board
     rowStr = ""
     for i in range(len(board)):
         for j in range(len(board[i])):
@@ -33,15 +33,15 @@ def  printBoard(board):
     print(rowStr)
 
 def updateBoard(board):
-    # updateBoard will update every cell according to the 4 rules
-    # parameter board is just a list of lists
+    # UpdateBoard will update every cell according to the 4 rules
+    # Parameter board is just a list of lists
     updatedBoard = copy.deepcopy(board)
     for i in range(len(board)):
         for j in range(len(board[i])):
             neighborSum = 0
 
 def findNeighbors(board):
-    #board will be a list and this function will return a sum of neighbors
+    # Board will be a list and this function will return a sum of neighbors
     neighborBoard = copy.deepcopy(board)
     ALIVE = 1
     DEAD = 0
@@ -101,26 +101,26 @@ def findNeighbors(board):
 def updateBoard(board):
     nextBoard = copy.deepcopy(board)
     neighBoard = findNeighbors(board)
-#    pdb.set_trace();
     
     for i in range(len(board)):
         for j in range(len(board[i])):
             #over/under-population
-            if (board[i][j] == ALIVE) and ((neighBoard[i][j] <= 1) or (neighBoard[i][j] > 3)):
+            if ((board[i][j] == ALIVE) and 
+               ((neighBoard[i][j] <= 1) or 
+               (neighBoard[i][j] > 3))):
                     nextBoard[i][j] = DEAD
             #reporduction
-            if (board[i][j] == DEAD) and (neighBoard[i][j] == 3):
+            if (    board[i][j] == DEAD) and (neighBoard[i][j] == 3):
                     nextBoard[i][j] = ALIVE
     return nextBoard
 
 def loadBoard(key):
-    # take a key, as a string, to search the save file
-    # returns a tuple whether it was found and if so also a board
+    # Take a key, as a string, to search the save file
+    # Returns a tuple whether it was found and if so also a board
     found = False
     f = open("saves","r")
     lineList = f.readlines()
     board = [[]]
-#    pdb.set_trace()
     for line in lineList:
         if (not line.startswith("#") and key in line):
             ind = lineList.index(line)
@@ -128,12 +128,12 @@ def loadBoard(key):
             found = True
     return (found, eval(board[0]))
 
-# attempts to end program if just stuck in same pattern
-#still needs work
+# Attempts to end program if just stuck in same pattern
+# Sill needs work
 formerState = copy.deepcopy(deadState)
 formerState2 = copy.deepcopy(formerState)
 i = 0
-# add some sanitation to this input
+# Add some sanitation to this input
 initialState = randomState
 wantLoaded = input("Do you want to load a file?" + '\n' + "(Y/N):\n")
 if (wantLoaded.lower() == "y"):
@@ -149,7 +149,6 @@ while ((initialState != formerState) and (initialState != formerState2)):
     formerState = initialState
     if (i%2 ==1):
         formerstate2 = initialState
-#    pdb.set_trace()
     initialState = updateBoard(initialState)
     print(initialState,file = log)
     printBoard(initialState)
