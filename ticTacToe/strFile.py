@@ -1,6 +1,5 @@
 # A file of strings and fns to return formatted strings
 # Probably unnecessary for a program this size
-greeting = "Hello and welcome!"
 getPlayerNum = """Choose a mode:
     [1] Single Player
     [2] Multi Player
@@ -14,3 +13,11 @@ rowMarker = "-"
 rowStr = " " + rowMarker*5 + " \n"
 colMarker = "|"
 tooManyPlayers = "Only 1 or 2 players are allowed at one time!"
+instructions = """
+Hello and welcome!
+The objective is to get 3 in a row, 3 in a column, or 3
+diagonally. Players will take turns picking cells on the board 
+until one player wins or both draw.
+The players pick cells [1-9] like the map below:"""
+#pretty print tutorial board after instructions
+
