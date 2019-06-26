@@ -20,4 +20,7 @@ diagonally. Players will take turns picking cells on the board
 until one player wins or both draw.
 The players pick cells [1-9] like the map below:"""
 #pretty print tutorial board after instructions
-
+def turnAlert(playersName):
+    return "What is your move, " + playersName + ".\n"
+validOptions = """Valid options include digits [1-9] or [map],
+which opens the index map.\n""" 
