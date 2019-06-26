@@ -15,20 +15,21 @@ for r in range(len(tutorialBoard)):
         tutorialBoard[r][c] = str(i)
         i += 1
 # Player names
-try:
-    players = int(input(strFile.getPlayerNum))
-    if not players in (1,2):
-        print(strFile.tooManyPlayers)
+def getPlayerNames():
+    try:
+        playerNum = int(input(strFile.getPlayerNum))
+        if not playerNum in (1,2):
+            print(strFile.tooManyPlayers)
+            sys.exit()
+    except ValueError:
+        print(strFile.valErrInt)
         sys.exit()
-except ValueError:
-    print(strFile.valErrInt)
-    sys.exit()
-playerList = [""]*players
-for i,player in enumerate(playerList):
-    playerList[i] = input(strFile.getPlayerName(i+1))
-player1 = playerList[0]
-if players == 2:
-    player2 = playerList[1]
+    playerList = [""]*playerNum
+    for i,player in enumerate(playerList):
+        playerList[i] = input(strFile.getPlayerName(i+1))
+    player1 = playerList[0]
+    if players == 2:
+        player2 = playerList[1]
 
 #  Print board
 def printBoard(board):
@@ -86,12 +87,38 @@ def updateBoard(board, player, choice):
     updatedBoard[dict[choice][0]][dict[choice][1]] = symbol
     return updatedBoard
 
-nextBoard = updateBoard(startingBoard, 0, '9')
-printBoard(nextBoard)
-nextBoard = updateBoard(nextBoard, 1, '8')
-printBoard(nextBoard)
-currentBoard = updateBoard(nextBoard, 0, '7')
-printBoard(nextBoard)
-getTurn(player1)
-# TODO Check board
-# TODO Decide winner/draw
+
+# Check board
+def checkBoard(board):
+    if any(None in row for row in board):
+        full = false
+    else:
+        full = true
+    # Rows
+    if all("X" in row for row in board):
+        winner = playerList[0]
+    if all("O" in row for row in board):
+        winner = playerList[1]
+    # Columns
+    for r in range(len(board)):
+        symbol = board[r][0]
+        if board[r][1] == symbol and board[r][2] == symbol:
+            if symbol == "X":
+                winner = playerList[0]
+            elif symbol == "O":
+                winner = playerList[1]
+    # Diagonals
+    # Adjust later if want non-traditional board sizes
+    symbol = board[1][1]
+    if (board[0][0] == symbol and board[2][2] == symbol
+        and board[0][2] == symbol and board[2][0] == symbol):
+        if symbol == "X":
+            winner = playerList[0]
+        elif symbol == "O":
+            winner = playerList[1]
+    return (full, winner)
+
+# Play the game!
+#def play()
+ #   while True:
+
