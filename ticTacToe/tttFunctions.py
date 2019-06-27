@@ -120,8 +120,8 @@ def checkBoard(board):
     # Diagonals
     # Adjust later if want non-traditional board sizes
     symbol = board[1][1]
-    if (board[0][0] == symbol and board[2][2] == symbol
-        and board[0][2] == symbol and board[2][0] == symbol):
+    if ((board[0][0] == symbol and board[2][2] == symbol)
+        or (board[0][2] == symbol and board[2][0] == symbol)):
         if symbol == "X":
             winner = playerList[0]
         elif symbol == "O":
