@@ -16,8 +16,9 @@ for r in range(len(tutorialBoard)):
         i += 1
 playerList = [""]
 
+
 # Player names
-def getPlayerNames():
+def getPlayerNames(playerList):
     try:
         playerNum = int(input(strFile.getPlayerNum))
         if not playerNum in (1,2):
@@ -30,9 +31,6 @@ def getPlayerNames():
         playerList.append("")
     for i,player in enumerate(playerList):
         playerList[i] = input(strFile.getPlayerName(i+1))
-    player1 = playerList[0]
-    if playerNum == 2:
-        player2 = playerList[1]
 
 #  Print board
 def printBoard(board):
@@ -87,22 +85,22 @@ def updateBoard(board, player, choice):
         symbol = "X"
     else:
         symbol = "O"
-    updatedBoard[dict[choice][0]][dict[choice][1]] = symbol
-    return updatedBoard
+    updated = False
+    cell = updatedBoard[dict[choice][0]][dict[choice][1]]
+    if updatedBoard[dict[choice][0]][dict[choice][1]] == None:
+        updatedBoard[dict[choice][0]][dict[choice][1]]= symbol
+        updated = True
+    return (updatedBoard, updated)
 
 
 # Check board
 def checkBoard(board):
     if any(None in row for row in board):
-        full = false
+        full = False
     else:
-        full = true
+        full = True
+    winner = None
     # Rows
-    if all("X" in row for row in board):
-        winner = playerList[0]
-    if all("O" in row for row in board):
-        winner = playerList[1]
-    # Columns
     for r in range(len(board)):
         symbol = board[r][0]
         if board[r][1] == symbol and board[r][2] == symbol:
@@ -110,6 +108,15 @@ def checkBoard(board):
                 winner = playerList[0]
             elif symbol == "O":
                 winner = playerList[1]
+    # Columns
+    for r in range(len(board)):
+        for c in range(len(board[r])):
+            symbol = board[0][c]
+            if board[1][c] == symbol and board[2][c] == symbol:
+                if symbol == "X":
+                    winner = playerList[0]
+                elif symbol == "O":
+                    winner = playerList[1]
     # Diagonals
     # Adjust later if want non-traditional board sizes
     symbol = board[1][1]
