@@ -49,30 +49,41 @@ def printBoard(board):
 
     
 # Get player turn
-def getTurn(player):
-    # argument is a players name
-    # Returns a tuple with the player and the board index
+def getTurn(player, board):
+    # Fn: get's a players move and determines if it is allowable
+    # Argument: players name as string, board as list of list
+    # Returns the players choice as an int from 1-9 
     print(strFile.turnAlert(player))
-    choice = input(strFile.validOptionStr)
-    dict = strFile.choiceMap
-    # Verify input to be [map] or in [1,9]
-    while ((not choice.lower() in strFile.validOptions
-            and not any(choice in rowList for rowList in tutorialBoard))
-        or choice.lower() in strFile.validOptions 
-        or currentBoard[dict[choice][0]][dict[choice][1]] != None):
-        # Ensures choice only goes out to return as an int
-        # map
-        if choice.lower() == strFile.validOptions[0]:
-            printBoard(tutorialBoard)
-        # board
-        elif choice.lower() == strFile.validOptions[1]:
-            printBoard(currentBoard)
+    legal = False
+    while not legal:
         choice = input(strFile.validOptionStr)
-    return(player, choice) 
+        dict = strFile.choiceMap
+        # Verify input to be [map] or in [1,9]
+        while ((not choice.lower() in strFile.validOptions
+                and not any(choice in rowList
+                        for rowList in tutorialBoard))
+            or choice.lower() in strFile.validOptions 
+            or currentBoard[dict[choice][0]][dict[choice][1]] != None):
+            # Ensures choice only goes out to return as an int
+            # map
+            if choice.lower() == strFile.validOptions[0]:
+                printBoard(tutorialBoard)
+            # board
+            elif choice.lower() == strFile.validOptions[1]:
+                printBoard(board)
+            choice = input(strFile.validOptionStr)
+        # tried to assign a var to simplify | failed
+        # look into why later
+        if board[dict[choice][0]][dict[choice][1]] == None:
+            legal = True
+        else:
+            print(strFile.spaceFilled)
+    return choice 
 
 
 # Update board
 def updateBoard(board, player, choice):
+    # Fn: given he arguments this function will update the board
     # Argument: board is a list of lists board, player is going to
     # be the index of the player, choice is the index of the cell
     # the player chose
@@ -86,15 +97,21 @@ def updateBoard(board, player, choice):
     else:
         symbol = "O"
     updated = False
-    cell = updatedBoard[dict[choice][0]][dict[choice][1]]
+    # tried to assign a var to simplify | failed
+    # look into why later
     if updatedBoard[dict[choice][0]][dict[choice][1]] == None:
         updatedBoard[dict[choice][0]][dict[choice][1]]= symbol
         updated = True
-    return (updatedBoard, updated)
+    return updatedBoard
 
 
 # Check board
 def checkBoard(board):
+    # Fn: checks whether the board is full and if any win conditions
+    # are met
+    # Arguments: board representted by a list of lists
+    # Returns a tuple with a boolean as to whether the board is full
+    # and either a winner or None
     if any(None in row for row in board):
         full = False
     else:
