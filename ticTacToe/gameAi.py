@@ -3,6 +3,16 @@ import random
 import strFile
 import pdb
 
+class Ai:
+    
+    def __init__(self, symbol, algo, name):
+        self.symbol = symbol
+        self.func = algo
+        self.name = name
+
+    def choose(self, board):
+        return self.func(board, self.symbol)
+
 # All the AI functions will take in 2 arguments:
 # board and symbol of the person who's turn it is
 # Return will be the coordinate of the move
@@ -70,7 +80,7 @@ def showWinningMoves(board, symbol):
 
 
 def findWinningAi(board, symbol):
-    winningMoves = showWinningMoves(board) 
+    winningMoves = showWinningMoves(board, symbol) 
     if len(winningMoves) > 0:
         for key, val in strFile.choiceMap.items():
             if val == winningMoves[0]:
@@ -82,6 +92,7 @@ def findWinningAi(board, symbol):
         
 
 def findWinLossAi(board, symbol):
+    pdb.set_trace()
     if symbol == "X":
         otherSymbol = "O"
     else:
