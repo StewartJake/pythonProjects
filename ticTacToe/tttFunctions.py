@@ -4,6 +4,8 @@
 import strFile
 import sys
 import copy
+import gameAi
+import pdb
 
 # Create board
 startingBoard = [[None]*3 for _ in range(3)]
@@ -27,10 +29,10 @@ def getPlayerNames(playerList):
     except ValueError:
         print(strFile.valErrInt)
         sys.exit()
-    if playerNum == 2:
-        playerList.append("")
     for i,player in enumerate(playerList):
         playerList[i] = input(strFile.getPlayerName(i+1))
+    if playerNum == 1:
+        playerList.append("AI")
 
 #  Print board
 def printBoard(board):
@@ -53,8 +55,12 @@ def getTurn(player, board):
     # Fn: get's a players move and determines if it is allowable
     # Argument: players name as string, board as list of list
     # Returns the players choice as an int from 1-9 
-    print(strFile.turnAlert(player))
     legal = False
+    if player != "AI":
+        print(strFile.turnAlert(player))
+    else:
+        choice = gameAi.randomAi(board, "O")
+        legal = True
     while not legal:
         choice = input(strFile.validOptionStr)
         dict = strFile.choiceMap
@@ -81,7 +87,6 @@ def getTurn(player, board):
     return choice 
 
 
-# Update board
 def updateBoard(board, player, choice):
     # Fn: given he arguments this function will update the board
     # Argument: board is a list of lists board, player is going to
@@ -105,7 +110,6 @@ def updateBoard(board, player, choice):
     return updatedBoard
 
 
-# Check board
 def checkBoard(board):
     # Fn: checks whether the board is full and if any win conditions
     # are met
