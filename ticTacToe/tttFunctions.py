@@ -31,8 +31,6 @@ def getPlayerNames(playerList):
         sys.exit()
     for i,player in enumerate(playerList):
         playerList[i] = input(strFile.getPlayerName(i+1))
-    if playerNum == 1:
-        playerList.append("AI")
 
 #  Print board
 def printBoard(board):
@@ -51,16 +49,11 @@ def printBoard(board):
 
     
 # Get player turn
-def getTurn(player, board):
+def getTurn(board, player):
     # Fn: get's a players move and determines if it is allowable
     # Argument: players name as string, board as list of list
     # Returns the players choice as an int from 1-9 
     legal = False
-    if player != "AI":
-        print(strFile.turnAlert(player))
-    else:
-        choice = gameAi.randomAi(board, "O")
-        legal = True
     while not legal:
         choice = input(strFile.validOptionStr)
         dict = strFile.choiceMap
@@ -87,7 +80,7 @@ def getTurn(player, board):
     return choice 
 
 
-def updateBoard(board, player, choice):
+def updateBoard(board, symbol, choice):
     # Fn: given he arguments this function will update the board
     # Argument: board is a list of lists board, player is going to
     # be the index of the player, choice is the index of the cell
@@ -97,10 +90,6 @@ def updateBoard(board, player, choice):
     # The indexing became rough as I tried to make it cleaner for the
     # user and this dictionary should map choice to [r][c]
     dict = strFile.choiceMap
-    if player == 0:
-        symbol = "X"
-    else:
-        symbol = "O"
     updated = False
     # tried to assign a var to simplify | failed
     # look into why later
@@ -110,41 +99,34 @@ def updateBoard(board, player, choice):
     return updatedBoard
 
 
-def checkBoard(board):
+def checkBoard(board, symbol):
     # Fn: checks whether the board is full and if any win conditions
     # are met
     # Arguments: board representted by a list of lists
     # Returns a tuple with a boolean as to whether the board is full
-    # and either a winner or None
+    # and whether the game has been won
     if any(None in row for row in board):
         full = False
     else:
         full = True
-    winner = None
+    won = False
     # Rows
     for r in range(len(board)):
-        symbol = board[r][0]
-        if board[r][1] == symbol and board[r][2] == symbol:
-            if symbol == "X":
-                winner = playerList[0]
-            elif symbol == "O":
-                winner = playerList[1]
+        if (board [r][0] == symbol 
+            and board[r][1] == symbol 
+            and board[r][2] == symbol):
+            won = True
     # Columns
     for r in range(len(board)):
         for c in range(len(board[r])):
-            symbol = board[0][c]
-            if board[1][c] == symbol and board[2][c] == symbol:
-                if symbol == "X":
-                    winner = playerList[0]
-                elif symbol == "O":
-                    winner = playerList[1]
+            if (board [0][c] == symbol
+                and board[1][c] == symbol 
+                and board[2][c] == symbol):
+                won = True
     # Diagonals
     # Adjust later if want non-traditional board sizes
-    symbol = board[1][1]
-    if ((board[0][0] == symbol and board[2][2] == symbol)
-        or (board[0][2] == symbol and board[2][0] == symbol)):
-        if symbol == "X":
-            winner = playerList[0]
-        elif symbol == "O":
-            winner = playerList[1]
-    return (full, winner)
+    if board[1][1] == symbol:
+        if ((board[0][0] == symbol and board[2][2] == symbol)
+            or (board[0][2] == symbol and board[2][0] == symbol)):
+                won = True
+    return (full, won)
