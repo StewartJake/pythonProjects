@@ -1,4 +1,5 @@
 import random
+import math
 import pdb
 import tttFunctions as tFn
 import strFile
@@ -34,7 +35,40 @@ def legalMoves(board):
     return legalMoves
 
 
+#def minimaxAi(board, symbol):
+#   bestMoves 
+
+def minimaxScore(board, symbol, isMaximizer):
+    # Runs the minimax algorithm
+    results = tFn.checkBoard(board, symbol)
+    full = results[0]
+    won = results[1]
+    score = results[2]
+    moveSet = legalMoves(board)
+    if symbol == "X":
+        minPlayer = "O"
+    else:
+        minPlayer = "X"
+    # Base Case
+    if won or full:
+        return score
+    elif isMaximizer:
+        highScore = -(math.inf)
+        for move in moveSet:
+            newBoard = tFn.updateBoard(board, symbol, move)
+            tempScore = minimaxScore(newBoard, symbol, True)
+            highScore = max(highScore, tempScore)
+        return highScore
+    else:
+        lowScore = math.inf
+        for move in moveSet:
+            newBoard = tFn.updateBoard(board, symbol, move)
+            tempScore = minimaxScore(newBoard, minPlayer, False)
+            lowScore = min(lowScore, tempScore)
+        return lowScore
+
 def randomAi(board, symbol):
+    # Randomly chooses an open space
     possibleMoves = legalMoves(board)
     choice = random.randrange(0, len(possibleMoves))
     return possibleMoves[choice]
@@ -83,6 +117,7 @@ def showWinningMoves(board, symbol):
 
 
 def findWinningAi(board, symbol):
+    # If a winning space is open, will choose it. Random otherwise
     winningMoves = showWinningMoves(board, symbol) 
     if len(winningMoves) > 0:
         for key, val in strFile.choiceMap.items():
@@ -95,6 +130,8 @@ def findWinningAi(board, symbol):
         
 
 def findWinLossAi(board, symbol):
+    # Will claim a winning spot or block a losing spot.
+    # Random otherwise
     if symbol == "X":
         otherSymbol = "O"
     else:
