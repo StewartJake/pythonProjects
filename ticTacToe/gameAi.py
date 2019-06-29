@@ -1,7 +1,8 @@
-import tttFunctions
 import random
-import strFile
 import pdb
+import tttFunctions as tFn
+import strFile
+
 
 class Ai:
     
@@ -16,6 +17,8 @@ class Ai:
 # All the AI functions will take in 2 arguments:
 # board and symbol of the person who's turn it is
 # Return will be the coordinate of the move
+
+
 def legalMoves(board):
     # Determines what cells are available on a board
     # Arguments: board as list of list
@@ -47,34 +50,34 @@ def showWinningMoves(board, symbol):
     for r in range(len(board)):
         for c in range(len(board[r])):
             if board[0][c] == symbol and board[1][c] == symbol:
-                if board[2][c] in openCells:
+                if tFn.coordsToMap(2,c)  in openCells:
                     winningMoves.append((2,c))
             elif board[0][c] == symbol and board[2][c] == symbol:
-                if board[1][c] in openCells:
+                if tFn.coordsToMap(1, c) in openCells:
                     winningMoves.append((1,c))
             elif board[1][c] == symbol and board[2][c] == symbol:
-                if board[0][c] in openCells:
+                if tFn.coordsToMap(0, c) in openCells:
                     winningMoves.append((0,c))
     # Columns
     for r in range(len(board)):
         if board[r][0] == symbol and board[r][1] == symbol:
-            if board[r][2] in openCells:
+            if tFn.coordsToMap(r, 2) in openCells:
                 winningMoves.append((r,2))
         elif board[r][1] == symbol and board[r][2] == symbol:
-            if board[r][0] in openCells:
+            if tFn.coordsToMap(r, 0) in openCells:
                 winningMoves.append((r,0))
         elif board[r][0] == symbol and board[r][2] == symbol:
-            if board[r][1] in openCells:
+            if tFn.coordsToMap(r, 1) in openCells:
                 winningMoves.append((r,1))
     # Diagonals
     if board[1][1] == symbol:
-        if board[0][0] == symbol and board[2][2] in openCells: 
+        if board[0][0] == symbol and tFn.coordsToMap(2, 2) in openCells: 
             winningMoves.append((2,2))
-        elif board[2][2] == symbol and board[2][0] in openCells:
+        elif board[2][2] == symbol and tFn.coordsToMap(0, 0) in openCells:
             winningMoves.append((0,0))
-        elif board[2][0] == symbol and board[0][2] in openCells:
+        elif board[2][0] == symbol and tFn.coordsToMap(0, 2) in openCells:
             winningMoves.append((0,2))
-        elif board[0][2] == symbol and board[2][0] in openCells:
+        elif board[0][2] == symbol and tFn.coordsToMap(2, 0) in openCells:
             winningMoves.append((2,0))
     return winningMoves
 
@@ -92,7 +95,6 @@ def findWinningAi(board, symbol):
         
 
 def findWinLossAi(board, symbol):
-    pdb.set_trace()
     if symbol == "X":
         otherSymbol = "O"
     else:
