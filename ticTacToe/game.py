@@ -8,8 +8,8 @@ tFn.getPlayerNames(tFn.playerList)
 randoRandall = gameAi.Ai("X", gameAi.randomAi, "RANDall")
 jaime = gameAi.Ai("O", gameAi.findWinningAi, "jAIme")
 aida = gameAi.Ai("O", gameAi.findWinLossAi, "AIda")
-#tFn.playerList[0] = aida 
-tFn.playerList.append(aida) 
+#tFn.playerList[0] = randoRandall 
+tFn.playerList.append(randoRandall) 
 
 def playGame(playerList):
     exit = False
@@ -46,7 +46,7 @@ def playGame(playerList):
 def test():
     p1Wins = 0
     p2Wins = 0
-    for i in range(1000000):
+    for i in range(10000):
         winner = playGame(tFn.playerList)
         if winner == 0:
             p1Wins += 1
@@ -57,3 +57,4 @@ def test():
 
 
 playGame(tFn.playerList)
+#test()
