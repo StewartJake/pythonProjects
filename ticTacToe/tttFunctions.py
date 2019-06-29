@@ -19,6 +19,21 @@ for r in range(len(tutorialBoard)):
 playerList = [""]
 
 
+def coordsToMap(x, y = None):
+    # Function: converts between coords and mapping
+    # Args: can be passed one str as a map or 2 integers as coords
+    # Return: if given a str returns a tuple of coords if coords a
+    #         str
+    if y == None:
+        return strFile.choiceMap[str(x)]
+    else:
+        tpl = tuple([x, y])
+        for key, val in strFile.choiceMap.items():
+            if val == tpl:
+                return key
+
+
+
 # Player names
 def getPlayerNames(playerList):
     try:
@@ -29,6 +44,8 @@ def getPlayerNames(playerList):
     except ValueError:
         print(strFile.valErrInt)
         sys.exit()
+    if playerNum == 2:
+        playerList.append("")
     for i,player in enumerate(playerList):
         playerList[i] = input(strFile.getPlayerName(i+1))
 
