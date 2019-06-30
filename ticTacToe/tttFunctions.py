@@ -118,15 +118,15 @@ def updateBoard(board, symbol, choice):
 
 def checkBoard(board, symbol):
     # Fn: checks whether the board is full and if any win conditions
-    # are met. Determines if symbol wins for assigning a score
+    # are met. 
     # Arguments: board represented by a list of lists
     # Returns a tuple with a boolean as to whether the board is full
-    # and whether the game has been won, & score for win/loss/draw
+    # and whether the game has been won
     if any(None in row for row in board):
         full = False
     else:
         full = True
-    won = False
+    won = None 
     score = None
     # Rows
     for r in range(len(board)):
@@ -134,10 +134,9 @@ def checkBoard(board, symbol):
             and board[r][0] == board[r][2]
             and board[r][0] != None):
             if board[r][0] == symbol:
-                score = 10
                 won = True
             else:
-                score = -10
+                won = False
     # Columns
     for r in range(len(board)):
         for c in range(len(board[r])):
@@ -145,19 +144,15 @@ def checkBoard(board, symbol):
                 and board[0][c] == board[2][c] 
                 and board[0][c] != None):
                 if board[0][c] == symbol:
-                    score = 10
                     won = True
                 else:
-                    score = -10
+                    won = False
     # Diagonals
     if board[1][1] != None:
         if ((board[0][0] == board[1][1] and board[1][1] == board[2][2])
             or (board[0][2] == board[1][1] and board[1][1] == board[2][0])):
                 if board[1][1] == symbol:
-                    score = 10
                     won = True
                 else:
-                    score = -10
-    if full and not won:
-        score = 0
-    return (full, won, score)
+                    won = False
+    return (full, won)
