@@ -4,13 +4,14 @@ import gameAi
 import tttFunctions as tFn
 import strFile
 
-tFn.getPlayerNames(tFn.playerList)
-randoRandall = gameAi.Ai("X", gameAi.randomAi, "RANDall")
+#tFn.getPlayerNames(tFn.playerList)
+randall = gameAi.Ai("O", gameAi.randomAi, "RANDall")
 jaime = gameAi.Ai("O", gameAi.findWinningAi, "jAIme")
 aida = gameAi.Ai("O", gameAi.findWinLossAi, "AIda")
-#tFn.playerList[0] = randoRandall 
-tFn.playerList.append(randoRandall) 
-
+raiden = gameAi.Ai("X", gameAi.minimaxAi, "rAIden")
+tFn.playerList[0] = raiden 
+#tFn.playerList.append(raiden) 
+tFn.playerList.append(randall)
 def playGame(playerList):
     exit = False
     currentBoard = tFn.currentBoard
@@ -27,7 +28,7 @@ def playGame(playerList):
         currentBoard = tFn.updateBoard(currentBoard, symbol, move)
         tFn.printBoard(currentBoard)
         test = tFn.checkBoard(currentBoard, symbol)
-        exit, won = test
+        exit, won, score = test
         if test[0] and won == False:
             print(strFile.announceDraw)
         if won:
@@ -43,10 +44,10 @@ def playGame(playerList):
             i = 0
 
 
-def test():
+def statTest():
     p1Wins = 0
     p2Wins = 0
-    for i in range(10000):
+    for i in range(100):
         winner = playGame(tFn.playerList)
         if winner == 0:
             p1Wins += 1
@@ -55,6 +56,8 @@ def test():
     print("Player1: " + str(p1Wins))
     print("Player2: " + str(p2Wins))
 
-
-playGame(tFn.playerList)
-#test()
+testBoard = [["X","O","X"],
+            ["O", "O","X"],
+            ["X","O","O"]];
+#playGame(tFn.playerList)
+statTest()

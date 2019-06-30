@@ -1,3 +1,4 @@
+import copy
 import random
 import math
 import pdb
@@ -35,16 +36,28 @@ def legalMoves(board):
     return legalMoves
 
 
-#def minimaxAi(board, symbol):
-#   bestMoves 
+def minimaxAi(board, symbol):
+    testBoard = copy.deepcopy(board)
+    bestMoves = [] 
+    bestScore = None
+    possibleMoves = legalMoves(testBoard)
+    for move in possibleMoves:
+        score = minimaxScore(testBoard, symbol, True)
+        if bestScore == None or score >= bestScore:
+            bestMoves.append(move)
+            bestScore = score
+    choice = random.randrange(0, len(bestMoves))
+    return bestMoves[choice]
+
 
 def minimaxScore(board, symbol, isMaximizer):
     # Runs the minimax algorithm
-    results = tFn.checkBoard(board, symbol)
+    testBoard = copy.deepcopy(board)
+    results = tFn.checkBoard(testBoard, symbol)
     full = results[0]
     won = results[1]
     score = results[2]
-    moveSet = legalMoves(board)
+    moveSet = legalMoves(testBoard)
     if symbol == "X":
         minPlayer = "O"
     else:
@@ -55,15 +68,15 @@ def minimaxScore(board, symbol, isMaximizer):
     elif isMaximizer:
         highScore = -(math.inf)
         for move in moveSet:
-            newBoard = tFn.updateBoard(board, symbol, move)
-            tempScore = minimaxScore(newBoard, symbol, True)
+            newBoard = tFn.updateBoard(testBoard, symbol, move)
+            tempScore = minimaxScore(newBoard, symbol, False)
             highScore = max(highScore, tempScore)
         return highScore
     else:
         lowScore = math.inf
         for move in moveSet:
-            newBoard = tFn.updateBoard(board, symbol, move)
-            tempScore = minimaxScore(newBoard, minPlayer, False)
+            newBoard = tFn.updateBoard(testBoard, symbol, move)
+            tempScore = minimaxScore(newBoard, minPlayer, True)
             lowScore = min(lowScore, tempScore)
         return lowScore
 
