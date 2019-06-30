@@ -37,27 +37,26 @@ def legalMoves(board):
 
 
 def minimaxAi(board, symbol):
-    testBoard = copy.deepcopy(board)
     bestMoves = [] 
     bestScore = None
-    possibleMoves = legalMoves(testBoard)
+    possibleMoves = legalMoves(board)
     for move in possibleMoves:
-        score = minimaxScore(testBoard, symbol, True)
+        testBoard = copy.deepcopy(board)
+        newBoard = tFn.updateBoard(testBoard, symbol, move)
+        score = minimaxScore(newBoard, symbol, True)
         if bestScore == None or score > bestScore:
             bestMove = move
             bestScore = score
-    choice = random.randrange(0, len(bestMoves))
     return bestMove
 
 
 def minimaxScore(board, symbol, isMaximizer):
     # Runs the minimax algorithm
     #pdb.set_trace()
-    testBoard = copy.deepcopy(board)
-    results = tFn.checkBoard(testBoard, symbol)
+    results = tFn.checkBoard(board, symbol)
     full = results[0]
     won = results[1]
-    moveSet = legalMoves(testBoard)
+    moveSet = legalMoves(board)
     if symbol == "X":
         minPlayer = "O"
     else:
@@ -69,21 +68,16 @@ def minimaxScore(board, symbol, isMaximizer):
         return 10
     elif won == False:
         return -10
-    elif isMaximizer:
-        highScore = -(math.inf)
-        for move in moveSet:
-            newBoard = tFn.updateBoard(testBoard, symbol, move)
-            tempScore = minimaxScore(newBoard, symbol, True)
-            highScore = max(highScore, tempScore)
-        return highScore
+    scores = []
+    for move in moveSet:
+        testBoard = copy.deepcopy(board)
+        newBoard = tFn.updateBoard(testBoard, symbol, move)
+        tempScore = minimaxScore(newBoard, minPlayer, False)
+        scores.append(tempScore)
+    if isMaximizer:
+        return max(scores)
     else:
-        lowScore = math.inf
-        for move in moveSet:
-            newBoard = tFn.updateBoard(testBoard, symbol, move)
-            tempScore = minimaxScore(newBoard, minPlayer, False)
-            lowScore = min(lowScore, tempScore)
-        return lowScore
-
+        return min(scores)
 
 def randomAi(board, symbol):
     # Randomly chooses an open space
