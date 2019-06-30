@@ -4,14 +4,16 @@ import gameAi
 import tttFunctions as tFn
 import strFile
 
-#tFn.getPlayerNames(tFn.playerList)
+tFn.getPlayerNames(tFn.playerList)
 randall = gameAi.Ai("O", gameAi.randomAi, "RANDall")
 jaime = gameAi.Ai("O", gameAi.findWinningAi, "jAIme")
 aida = gameAi.Ai("O", gameAi.findWinLossAi, "AIda")
 raiden = gameAi.Ai("X", gameAi.minimaxAi, "rAIden")
-tFn.playerList[0] = raiden 
-#tFn.playerList.append(raiden) 
-tFn.playerList.append(randall)
+#tFn.playerList[0] = raiden 
+tFn.playerList.append(raiden) 
+#tFn.playerList.append(randall)
+
+
 def playGame(playerList):
     exit = False
     currentBoard = tFn.currentBoard
@@ -28,8 +30,8 @@ def playGame(playerList):
         currentBoard = tFn.updateBoard(currentBoard, symbol, move)
         tFn.printBoard(currentBoard)
         test = tFn.checkBoard(currentBoard, symbol)
-        exit, won, score = test
-        if test[0] and won == False:
+        exit, won = test
+        if test[0] and won == None:
             print(strFile.announceDraw)
         if won:
             if type(playerList[i]) != gameAi.Ai:
@@ -59,5 +61,5 @@ def statTest():
 testBoard = [["X","O","X"],
             ["O", "O","X"],
             ["X","O","O"]];
-#playGame(tFn.playerList)
-statTest()
+playGame(tFn.playerList)
+#statTest()
