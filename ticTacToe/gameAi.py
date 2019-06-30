@@ -43,42 +43,47 @@ def minimaxAi(board, symbol):
     possibleMoves = legalMoves(testBoard)
     for move in possibleMoves:
         score = minimaxScore(testBoard, symbol, True)
-        if bestScore == None or score >= bestScore:
-            bestMoves.append(move)
+        if bestScore == None or score > bestScore:
+            bestMove = move
             bestScore = score
     choice = random.randrange(0, len(bestMoves))
-    return bestMoves[choice]
+    return bestMove
 
 
 def minimaxScore(board, symbol, isMaximizer):
     # Runs the minimax algorithm
+    #pdb.set_trace()
     testBoard = copy.deepcopy(board)
     results = tFn.checkBoard(testBoard, symbol)
     full = results[0]
     won = results[1]
-    score = results[2]
     moveSet = legalMoves(testBoard)
     if symbol == "X":
         minPlayer = "O"
     else:
         minPlayer = "X"
     # Base Case
-    if won or full:
-        return score
+    if won == None and full:
+        return 0
+    elif won == True:
+        return 10
+    elif won == False:
+        return -10
     elif isMaximizer:
         highScore = -(math.inf)
         for move in moveSet:
             newBoard = tFn.updateBoard(testBoard, symbol, move)
-            tempScore = minimaxScore(newBoard, symbol, False)
+            tempScore = minimaxScore(newBoard, symbol, True)
             highScore = max(highScore, tempScore)
         return highScore
     else:
         lowScore = math.inf
         for move in moveSet:
             newBoard = tFn.updateBoard(testBoard, symbol, move)
-            tempScore = minimaxScore(newBoard, minPlayer, True)
+            tempScore = minimaxScore(newBoard, minPlayer, False)
             lowScore = min(lowScore, tempScore)
         return lowScore
+
 
 def randomAi(board, symbol):
     # Randomly chooses an open space
